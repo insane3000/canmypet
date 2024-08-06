@@ -1,9 +1,12 @@
-import React, { useState } from "react";
+import { data } from "@/json/data";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import { FiSearch } from "react-icons/fi";
 import { IoMdAdd, IoMdRefresh } from "react-icons/io";
 import styled from "styled-components";
-import folders from "../../json/folders.json";
-const SearchSt = styled.form`
+import Spinner from "../atoms/Spinner";
+import SpinnerSmall from "../atoms/SpinnerSmall";
+
+const SearchSt = styled.div`
   width: 100%;
   height: auto;
 
@@ -138,41 +141,42 @@ const SearchSt = styled.form`
 interface props {
   search: string;
   setSearch: (key: string) => void;
-  handleSearch: (e: React.FormEvent<HTMLFormElement>) => void;
-  handleReset: () => void;
+  analyzeImage: () => void;
+  spinner: boolean;
+  setSpinner: Dispatch<SetStateAction<boolean>>;
 }
 export default function Search(props: props) {
   return (
-    <SearchSt
-      onSubmit={(e) => {
-        props.handleSearch(e);
-      }}
-    >
-      <p className="title">ProducerGO</p>
+    <SearchSt>
+      <p className="title">¿Puede mi mascota comer eso?</p>
       <div className="search_container">
-        <div className="container_icon_input">
-          <FiSearch className="seach_icon" />
-          <input
-            className="seach_input"
-            type="text"
-            name="search"
-            value={props.search}
-            onChange={(e) => props.setSearch(e.currentTarget.value)}
-            placeholder="Buscar..."
-            onFocus={(e) => e.currentTarget.select()}
-          />
-        </div>
+        <select
+          className="box_select"
+          name="Available"
+          value={props.search}
+          onChange={(e) => props.setSearch(e.currentTarget.value)}
+          required
+        >
+          <option className="box_option" value={""}>
+            Elije un animal
+          </option>
+          {data.map((i) => (
+            <option key={i} className="box_option" value={i}>
+              {i}
+            </option>
+          ))}
+        </select>
         <div
           className="refresh_button"
-          onClick={() => {
-            props.handleReset();
-            props.setSearch("");
-          }}
+          //   onClick={() => {
+          //     props.handleReset();
+          //     props.setSearch("");
+          //   }}
         >
           <IoMdRefresh className="sysIconRefresh" />
         </div>
-        <button className="button_search" type="submit">
-          Buscar
+        <button className="button_search" type="button" onClick={() => props.analyzeImage()} disabled={props.spinner}>
+          {props.spinner ? <SpinnerSmall /> : "Analizar"}
         </button>
       </div>
     </SearchSt>

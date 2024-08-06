@@ -7,7 +7,7 @@ import styled from "styled-components";
 const APIKeySt = styled.div`
   width: 100%;
   height: auto;
- 
+
   .title {
     font-family: var(--motiva700);
     font-size: 0.9rem;
@@ -115,11 +115,14 @@ export default function APIKey(props: props) {
           onChange={(e) => props.setModelInput(e.currentTarget.value)}
           required
         >
-          <option className="box_option" value="llama-3-sonar-small-32k-chat">
-            llama-3-sonar-small-32k-chat
+          <option className="box_option" value="gpt-4o">
+            gpt-4o
           </option>
-          <option className="box_option" value="llama-3-sonar-large-32k-chat">
-            llama-3-sonar-large-32k-chat
+          <option className="box_option" value="gpt-4o-mini">
+            gpt-4o-mini
+          </option>
+          <option className="box_option" value="gpt-4-turbo">
+            gpt-4-turbo
           </option>
         </select>
       </div>
