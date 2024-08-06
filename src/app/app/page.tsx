@@ -190,6 +190,8 @@ export default function Page() {
       setSpinner(false);
     } catch (error: any) {
       console.error("Error analyzing image:", error.response ? error.response.data : error.message);
+      toast("Error analizado la imagen");
+
       setSpinner(false);
     }
   }
@@ -245,9 +247,9 @@ export default function Page() {
     return new File([blob], filename, { type: mimeType });
   };
 
-//   useEffect(() => {
-//     toast(base64String);
-//   }, [base64String]);
+  //   useEffect(() => {
+  //     toast(base64String);
+  //   }, [base64String]);
   return (
     <HomeSt>
       <div className="header">
