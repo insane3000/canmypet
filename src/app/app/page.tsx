@@ -95,7 +95,7 @@ export default function Page() {
   // Función para enviar la solicitud a la API de OpenAI
   async function analyzeImage() {
     if (apiKey.length === 0) {
-      toast("Debes introducir tu Perplexity API Key");
+      toast("Debes introducir tu OpenAi API Key");
       if (typeof window !== "undefined") window.scrollTo(0, 0);
       return;
     }
