@@ -21,7 +21,7 @@ const SearchSt = styled.div`
     height: 2rem;
     /* margin-bottom: 1rem; */
     display: grid;
-    grid-template-columns: calc(100% - 11rem) 2rem 8rem;
+    grid-template-columns: calc(100% - 8.5rem) 8rem;
     grid-template-rows: 2rem;
     gap: 0.5rem;
     /* margin-bottom: 1rem; */
@@ -166,15 +166,7 @@ export default function Search(props: props) {
             </option>
           ))}
         </select>
-        <div
-          className="refresh_button"
-          //   onClick={() => {
-          //     props.handleReset();
-          //     props.setSearch("");
-          //   }}
-        >
-          <IoMdRefresh className="sysIconRefresh" />
-        </div>
+
         <button className="button_search" type="button" onClick={() => props.analyzeImage()} disabled={props.spinner}>
           {props.spinner ? <SpinnerSmall /> : "Analizar"}
         </button>

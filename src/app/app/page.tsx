@@ -29,16 +29,7 @@ const HomeSt = styled.div`
       height: 1rem;
     }
   }
-  .loader {
-    width: 100%;
-    height: 100%;
-    background: #09090b;
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-  }
+
   .subtitle {
     width: 100%;
     font-family: var(--motiva300);
@@ -49,8 +40,8 @@ const HomeSt = styled.div`
     width: 100%;
     height: auto;
     margin-bottom: 2rem;
-    font-family: var(--motiva300);
-    font-size: 0.9rem;
+    font-family: var(--motiva400);
+    font-size: 1rem;
     color: #c4c4c4;
   }
 `;
@@ -70,7 +61,7 @@ export default function Page() {
   };
 
   const payload = {
-    model: "gpt-4o-mini",
+    model: modelInput,
     messages: [
       {
         role: "user",
@@ -122,8 +113,6 @@ export default function Page() {
   }
   const openaiProvider = createOpenAI({
     apiKey: apiKey,
-    //     baseURL: "https://api.perplexity.ai",
-    //     compatibility: "compatible", // Modo estricto para usar la API de OpenAI
   });
 
   const fetchStreamingText = async (imageAnalyzed: string) => {
@@ -138,10 +127,6 @@ export default function Page() {
       for await (const textPart of textStream) {
         accumulatedText += textPart;
         setResponse(accumulatedText);
-        // Scroll to the bottom to show the latest text
-        //     if (textAreaRef.current) {
-        //       textAreaRef.current.scrollTop = textAreaRef.current.scrollHeight;
-        //     }
       }
     } catch (error) {
       toast("Error solicitando los datos.");
@@ -149,7 +134,6 @@ export default function Page() {
       setIsStreaming(false);
     }
   };
-  //   analyzeImage(imageUrl);
 
   return (
     <HomeSt>
