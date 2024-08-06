@@ -37,12 +37,31 @@ const HomeSt = styled.div`
     color: #c4c4c4;
   }
   .response {
-    width: 100%;
-    height: auto;
-    margin-bottom: 2rem;
-    font-family: var(--motiva400);
-    font-size: 1rem;
-    color: #c4c4c4;
+    border: 1px solid #2c2c2c;
+    border-radius: 0.5rem;
+
+    margin-top: 1rem;
+    margin-bottom: 4rem;
+    padding: 1rem;
+    .title_prompt {
+      font-family: var(--motiva500);
+      font-size: 1.25rem;
+      color: #dddddd;
+    }
+    .data {
+      width: 100%;
+      height: auto;
+      white-space: normal;
+      font-family: var(--motiva300);
+      font-size: 0.9rem;
+      color: #d6d6d6;
+      margin-top: 1rem;
+      h2 {
+        font-family: var(--motiva400);
+        margin-top: 1rem;
+        color: #dddddd;
+      }
+    }
   }
 `;
 
@@ -103,7 +122,6 @@ export default function Page() {
     setResponse("");
     try {
       const response = await axios.post("https://api.openai.com/v1/chat/completions", payload, { headers });
-      console.log(response.data.choices[0].message.content);
       fetchStreamingText(response.data.choices[0].message.content);
       setSpinner(false);
     } catch (error: any) {
@@ -135,6 +153,16 @@ export default function Page() {
     }
   };
 
+  function insertH2(texto: string) {
+    // Expresión regular para encontrar texto entre ** y opcionalmente un número antes, incluyendo :
+    const regex = /(\d+\.\s*)?\*\*(.*?)\*\*(:?)/g;
+
+    // Reemplazar las coincidencias con el formato deseado, manteniendo el resto del texto
+    const result = texto.replace(regex, (match: string, numero: string, contenido: string, dosPuntos: string) => {
+      return `<h2>${numero ? numero : ""}${contenido}${dosPuntos}</h2>`;
+    });
+    return result;
+  }
   return (
     <HomeSt>
       <div className="header">
@@ -151,7 +179,18 @@ export default function Page() {
       </div>
       <div className="subtitle">Sube la imagen de algún alimento</div>
       <ImagePreview file={file} setFile={setFile} setBase64String={setBase64String} />
-      <p className="response">{response}</p>
+
+      {response.length !== 0 && (
+        <div className="response">
+          <h1 className="title_prompt">¿Puede mi mascota comer eso?</h1>
+          <div
+            className="data"
+            dangerouslySetInnerHTML={{
+              __html: insertH2(response),
+            }}
+          ></div>
+        </div>
+      )}
       <Toaster style={{ fontFamily: "var(--motiva400)" }} />
     </HomeSt>
   );

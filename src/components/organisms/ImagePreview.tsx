@@ -13,7 +13,7 @@ const ImagePreviewSt = styled.div`
   margin-top: 1rem;
   .image_drop_container {
     width: 100%;
-    height: 22rem;
+    height: 20rem;
     position: relative;
     button {
       width: 100%;
@@ -79,7 +79,7 @@ export default function ImagePreview(props: props) {
             backgroundImage: `url(${preview ? preview : "/empty.png"})`,
             backgroundPosition: "center",
             backgroundRepeat: "no-repeat",
-            backgroundSize: "contain",
+            backgroundSize: "cover",
           }}
         />
         <input
@@ -104,6 +104,7 @@ export default function ImagePreview(props: props) {
             onClick={() => {
               props.setFile(null);
               setPreview(null);
+              props.setBase64String("");
             }}
           />
         )}
