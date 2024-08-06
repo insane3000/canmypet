@@ -35,7 +35,7 @@ const ImagePreviewSt = styled.div`
       border-radius: 100%;
       position: absolute;
       top: -1rem;
-      right: -1rem;
+      right: -0.5rem;
       padding: 0.3rem;
     }
   }

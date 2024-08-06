@@ -7,7 +7,7 @@ export default function page() {
     <>
       <main className={styles.main_landing}>
         <div className={styles.potrait_container}>
-          <img className={styles.potrait} src="/potrait.webp" alt="Film producer" />
+          <img className={styles.potrait} src="/potrait.webp" alt="cheems" />
         </div>
         {/* <h1 className={styles.title}></h1> */}
         <p className={styles.subtitle}>Que puede o no comer tu mascota, potenciado por IA.</p>

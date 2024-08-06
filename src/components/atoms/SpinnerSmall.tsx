@@ -11,8 +11,8 @@ const SpinnerSt = styled.div`
   .html-spinner {
     width: 1.5rem;
     height: 1.5rem;
-    border: 0.2rem solid #1c1c1d;
-    border-top: 0.2rem solid #ffffff;
+    border: 0.2rem solid #9797977d;
+    border-top: 0.2rem solid #1c1c1d;
     border-radius: 50%;
   }
 

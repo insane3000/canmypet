@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Search from "@/components/organisms/Search";
 import APIKey from "@/components/organisms/APIKey";
 import styled from "styled-components";
@@ -11,10 +11,14 @@ import axios from "axios";
 import { createOpenAI } from "@ai-sdk/openai";
 import { generateText, streamText } from "ai";
 import { prompt } from "@/libs/prompt";
-
+import { Camera } from "react-camera-pro";
+import { IoClose } from "react-icons/io5";
 const HomeSt = styled.div`
   width: 100%;
   height: auto;
+  position: relative;
+  display: flex;
+  flex-direction: column;
   .header {
     width: 100%;
     height: auto;
@@ -63,6 +67,65 @@ const HomeSt = styled.div`
       }
     }
   }
+  .camera_container {
+    position: absolute;
+    top: 4rem;
+    width: 100%;
+    height: 25rem;
+    display: flex;
+    border-radius: 1rem;
+    overflow: hidden;
+    background: black;
+
+    .gradient {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      /* background: red; */
+      background: rgb(0, 0, 0);
+      background: linear-gradient(
+        180deg,
+        rgba(0, 0, 0, 0.4822303921568627) 0%,
+        rgba(0, 0, 0, 0) 51%,
+        rgba(0, 0, 0, 0.44861694677871145) 100%
+      );
+      .close {
+        width: 3rem;
+        height: 3rem;
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0.5rem;
+        .icon_close {
+          width: 100%;
+          height: 100%;
+        }
+      }
+      .capture {
+        width: 3.5rem;
+        height: 3.5rem;
+        background: #ffffff66;
+        position: absolute;
+        bottom: 2rem;
+        border-radius: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        .button {
+          width: 2.5rem;
+          height: 2.5rem;
+          border-radius: 100%;
+          background: white;
+        }
+      }
+    }
+  }
 `;
 
 export default function Page() {
@@ -73,6 +136,7 @@ export default function Page() {
   const [spinner, setSpinner] = useState(false);
   const [isStreaming, setIsStreaming] = useState(false);
   const [response, setResponse] = useState("");
+  const [cameraIsEnabled, setCameraIsEnabled] = useState(false);
   // Configuración de la solicitud HTTP
   const headers = {
     "Content-Type": "application/json",
@@ -163,6 +227,27 @@ export default function Page() {
     });
     return result;
   }
+  // !Camera
+  const camera = useRef(null);
+  const base64ToFile = (base64String: any, filename: string) => {
+    // Extrae el tipo de archivo y los datos base64
+    const [header, data] = base64String.split(",");
+    const mimeType = header.match(/:(.*?);/)[1];
+    const binaryString = atob(data);
+    const arrayBuffer = new ArrayBuffer(binaryString.length);
+    const uint8Array = new Uint8Array(arrayBuffer);
+
+    for (let i = 0; i < binaryString.length; i++) {
+      uint8Array[i] = binaryString.charCodeAt(i);
+    }
+
+    const blob = new Blob([uint8Array], { type: mimeType });
+    return new File([blob], filename, { type: mimeType });
+  };
+
+//   useEffect(() => {
+//     toast(base64String);
+//   }, [base64String]);
   return (
     <HomeSt>
       <div className="header">
@@ -174,6 +259,7 @@ export default function Page() {
           analyzeImage={analyzeImage}
           spinner={spinner}
           setSpinner={setSpinner}
+          setCameraIsEnabled={setCameraIsEnabled}
         />
         <div className="border_spacer_bottom"></div>
       </div>
@@ -189,6 +275,36 @@ export default function Page() {
               __html: insertH2(response),
             }}
           ></div>
+        </div>
+      )}
+      {cameraIsEnabled && (
+        <div className="camera_container">
+          <Camera
+            ref={camera}
+            facingMode="environment"
+            errorMessages={{
+              noCameraAccessible: "No camera device accessible. Please connect your camera or try a different browser.",
+              permissionDenied: "Permission denied. Please refresh and give camera permission.",
+              switchCamera:
+                "It is not possible to switch camera to different one because there is only one video device accessible.",
+              canvas: "Canvas is not supported.",
+            }}
+          />
+          <div className="gradient">
+            <div className="close" onClick={() => setCameraIsEnabled(false)}>
+              <IoClose className="icon_close" />
+            </div>
+            <div
+              className="capture"
+              onClick={() => {
+                // @ts-ignore
+                setFile(base64ToFile(camera.current?.takePhoto(), "image.png"));
+                setCameraIsEnabled(false);
+              }}
+            >
+              <div className="button"></div>
+            </div>
+          </div>
         </div>
       )}
       <Toaster style={{ fontFamily: "var(--motiva400)" }} />

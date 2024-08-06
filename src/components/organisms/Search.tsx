@@ -1,7 +1,7 @@
 import { data } from "@/json/data";
 import React, { Dispatch, SetStateAction, useState } from "react";
 import { FiSearch } from "react-icons/fi";
-import { IoMdAdd, IoMdRefresh } from "react-icons/io";
+import { IoMdAdd, IoMdCamera, IoMdRefresh } from "react-icons/io";
 import styled from "styled-components";
 import Spinner from "../atoms/Spinner";
 import SpinnerSmall from "../atoms/SpinnerSmall";
@@ -21,7 +21,7 @@ const SearchSt = styled.div`
     height: 2rem;
     /* margin-bottom: 1rem; */
     display: grid;
-    grid-template-columns: calc(100% - 8.5rem) 8rem;
+    grid-template-columns: calc(100% - 11rem) 2rem 8rem;
     grid-template-rows: 2rem;
     gap: 0.5rem;
     /* margin-bottom: 1rem; */
@@ -144,6 +144,7 @@ interface props {
   analyzeImage: () => void;
   spinner: boolean;
   setSpinner: Dispatch<SetStateAction<boolean>>;
+  setCameraIsEnabled: Dispatch<SetStateAction<boolean>>;
 }
 export default function Search(props: props) {
   return (
@@ -166,7 +167,14 @@ export default function Search(props: props) {
             </option>
           ))}
         </select>
-
+        <div
+          className="refresh_button"
+          onClick={() => {
+            props.setCameraIsEnabled(true);
+          }}
+        >
+          <IoMdCamera className="sysIconRefresh" />
+        </div>
         <button className="button_search" type="button" onClick={() => props.analyzeImage()} disabled={props.spinner}>
           {props.spinner ? <SpinnerSmall /> : "Analizar"}
         </button>
