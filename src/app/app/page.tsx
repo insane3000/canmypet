@@ -191,7 +191,6 @@ export default function Page() {
     } catch (error: any) {
       console.error("Error analyzing image:", error.response ? error.response.data : error.message);
       toast("Error analizado la imagen");
-
       setSpinner(false);
     }
   }
