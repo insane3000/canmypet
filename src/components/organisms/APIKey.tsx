@@ -103,7 +103,7 @@ export default function APIKey(props: props) {
             name="apikey"
             value={props.apiKey}
             onChange={(e) => props.setApiKey(e.currentTarget.value)}
-            placeholder="Perplexity API Key"
+            placeholder="OpenAi API Key"
             onFocus={(e) => e.currentTarget.select()}
             //       required
           />

@@ -99,16 +99,17 @@ export default function Page() {
       if (typeof window !== "undefined") window.scrollTo(0, 0);
       return;
     }
+    if (search.length === 0) {
+      toast("Selecciona un animal");
+      return;
+    }
     if (base64String.length === 0) {
       toast("Selecciona una imagen");
       return;
     }
 
-    if (search.length === 0) {
-      toast("Selecciona un animal");
-      return;
-    }
     setSpinner(true);
+    setResponse("");
     try {
       const response = await axios.post("https://api.openai.com/v1/chat/completions", payload, { headers });
       console.log(response.data.choices[0].message.content);
