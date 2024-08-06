@@ -94,6 +94,11 @@ export default function Page() {
 
   // Función para enviar la solicitud a la API de OpenAI
   async function analyzeImage() {
+    if (apiKey.length === 0) {
+      toast("Debes introducir tu Perplexity API Key");
+      if (typeof window !== "undefined") window.scrollTo(0, 0);
+      return;
+    }
     if (base64String.length === 0) {
       toast("Selecciona una imagen");
       return;
@@ -121,11 +126,6 @@ export default function Page() {
   });
 
   const fetchStreamingText = async (imageAnalyzed: string) => {
-    if (apiKey.length === 0) {
-      toast("Debes introducir tu Perplexity API Key");
-      if (typeof window !== "undefined") window.scrollTo(0, 0);
-      return;
-    }
     setIsStreaming(true);
     try {
       const model = openaiProvider.chat(modelInput);
